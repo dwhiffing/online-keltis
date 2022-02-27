@@ -31,7 +31,7 @@ export class GameRoom extends Room<RoomState> {
     return true
   }
 
-  onJoin(client: Client, options: { roomName: string }) {
+  onJoin(client: Client, options: { name: string; roomName: string }) {
     const playerId = client.sessionId
     this.dispatcher.dispatch(new Commands.JoinCommand(), {
       playerId,

@@ -1,22 +1,30 @@
 import Head from 'next/head'
-import { Card, SUIT_VALUES, groupCards, State } from '../lib'
+import { useEffect } from 'react'
+import { Card, SUIT_VALUES, groupCards, State, Player } from '../lib'
 
 export const Layout = ({
   state,
   onSelect,
+  currentPlayerId,
   selectedCard,
   onDiscard,
   onDraw,
   onPlay,
 }: {
   state: State | null
+  currentPlayerId: string
   selectedCard: Card | null
   onSelect: (card: Card) => void
   onDiscard: () => void
   onDraw: () => void
   onPlay: () => void
 }) => {
-  if (!state) return null
+  const index = state?.players.findIndex((p) => p.id === currentPlayerId)!
+  const currentPlayer = state?.players[index]
+  const isOurTurn = state?.playerIndex === index
+
+  if (!state || !currentPlayer) return null
+
   return (
     <main>
       <Head>
@@ -27,21 +35,25 @@ export const Layout = ({
 
       {state.players
         .map((p, i) => ({ ...p, index: i }))
+        .filter((p) => p.id !== currentPlayerId)
         .map((player, i) => (
           <div
             key={i}
-            className={`player my-8 ${i === state.playerIndex ? 'active' : ''}`}
+            className={`player my-2 ${i === state.playerIndex ? 'active' : ''}`}
           >
-            <p>Player {i + 1}</p>
-
-            <div>
-              {Object.values(player.piles).length > 0 && <p>Piles</p>}
-              <Piles key={i} piles={player.piles} />
-            </div>
+            <p>{player.name}</p>
+            <Piles key={i} piles={player.piles} />
           </div>
         ))}
 
       <div className="order-last space-y-2">
+        <div>
+          <p>You</p>
+          <div>
+            <Piles piles={currentPlayer.piles} />
+          </div>
+        </div>
+
         <div>
           <p>Discard</p>
           <div className="flex space-x-2 h-20">
@@ -52,11 +64,11 @@ export const Layout = ({
         </div>
 
         <div>
-          <p>Hand</p>
+          <p>Your Hand</p>
           <Cards
             selected={selectedCard}
             onClick={onSelect}
-            cards={state.players[0].hand}
+            cards={currentPlayer.hand}
           />
         </div>
 
@@ -64,13 +76,19 @@ export const Layout = ({
           <p>Actions</p>
           <div className="flex space-x-2 h-20">
             {state.phaseIndex === 0 ? null : (
-              <button onClick={() => onDraw()}>draw</button>
+              <button disabled={!isOurTurn} onClick={() => onDraw()}>
+                draw
+              </button>
             )}
             {state.phaseIndex === 1 || !selectedCard ? null : (
-              <button onClick={() => onDiscard()}>discard</button>
+              <button disabled={!isOurTurn} onClick={() => onDiscard()}>
+                discard
+              </button>
             )}
             {state.phaseIndex === 1 || !selectedCard ? null : (
-              <button onClick={() => onPlay()}>play</button>
+              <button disabled={!isOurTurn} onClick={() => onPlay()}>
+                play
+              </button>
             )}
           </div>
         </div>

@@ -3,7 +3,13 @@ import * as Colyseus from 'colyseus.js'
 import { Card, State } from '../lib'
 import { Layout } from './Layout'
 
-export const GameRoom = ({ room }: { room: Colyseus.Room }) => {
+export const GameRoom = ({
+  room,
+  onLeave,
+}: {
+  room: Colyseus.Room
+  onLeave: () => void
+}) => {
   const [state, setState] = useState<State | null>(null)
   const [selectedCard, setSelectedCard] = useState<Card | null>(null)
 
@@ -11,7 +17,15 @@ export const GameRoom = ({ room }: { room: Colyseus.Room }) => {
     room.onStateChange((state) => {
       setState(state.toJSON())
     })
-  }, [room])
+    room.onLeave((code) => {
+      console.warn({ type: 'leave', code })
+      onLeave()
+    })
+    room.onError((code, error) => {
+      console.error({ type: 'error', code, error })
+      onLeave()
+    })
+  }, [room, onLeave])
 
   const onSelect = (card: Card) => {
     if (!state || state.phaseIndex === 1) return
@@ -35,6 +49,8 @@ export const GameRoom = ({ room }: { room: Colyseus.Room }) => {
     room.send('Play', { card: selectedCard })
   }
 
+  // console.log(state)
+
   if (state?.playerIndex === -1) {
     return (
       <div>
@@ -49,6 +65,7 @@ export const GameRoom = ({ room }: { room: Colyseus.Room }) => {
   return (
     <Layout
       state={state}
+      currentPlayerId={room.sessionId}
       selectedCard={selectedCard}
       onSelect={onSelect}
       onDiscard={onDiscard}

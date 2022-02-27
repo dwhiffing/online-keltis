@@ -2,8 +2,13 @@ import { Command } from '@colyseus/command'
 import { GameRoom } from '../Room'
 import { Player } from '../Schema'
 
-export class JoinCommand extends Command<GameRoom, { playerId: string }> {
-  validate({ playerId }: { playerId: string }) {
+interface Options {
+  playerId: string
+  name: string
+}
+
+export class JoinCommand extends Command<GameRoom, Options> {
+  validate({ playerId }: Options) {
     return !!playerId && this.state.players.length < 4
   }
 

@@ -1,5 +1,6 @@
 import { useState, useRef, useEffect, useCallback } from 'react'
 import * as Colyseus from 'colyseus.js'
+import { getName } from '../lib'
 
 const Lobby = ({
   colyseus,
@@ -15,14 +16,11 @@ const Lobby = ({
   >([])
 
   const createRoom = useCallback(async () => {
-    const roomName = 'asd'
+    const roomName = 'Game' + Date.now()
     // const roomName = prompt('Room name?')
     // if (!roomName) return
 
-    const room = await colyseus.create('game', {
-      roomName,
-      name: 'Player' + Date.now(),
-    })
+    const room = await colyseus.create('game', { roomName, name: getName() })
     localStorage.setItem(room.id, room.sessionId)
     return room
   }, [colyseus])
@@ -35,7 +33,7 @@ const Lobby = ({
         try {
           room = await colyseus.reconnect(roomId, sessionId)
         } catch (e) {
-          console.log(e)
+          console.error(e)
         }
       } else {
         room = room || (await colyseus.joinById(roomId, { name }))
@@ -73,9 +71,9 @@ const Lobby = ({
   }
 
   const onJoinRoom = useCallback(
-    (roomId, name = 'Player' + Date.now()) =>
+    (roomId, name = getName()) =>
       joinRoom(roomId, name, (room) => setRoom(room)),
-    [],
+    [joinRoom, setRoom],
   )
 
   useEffect(() => {

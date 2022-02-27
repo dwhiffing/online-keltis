@@ -7,7 +7,11 @@ export interface Card {
 }
 
 export interface Player {
+  id?: string
   name?: string
+  index?: number
+  connected?: boolean
+  remainingConnectionTime?: number
   hand: Card[]
   piles: Card[]
   // stones: Card[]
@@ -116,3 +120,61 @@ export const playCard = (state: State, selectedCard: Card) => {
 
 export const groupCards = (cards: Card[]) =>
   Object.values(groupBy(cards, (c) => c.suit))
+
+let i = 0
+export const getName = () => {
+  return names[i++]
+}
+
+const names = shuffle([
+  'Dayne',
+  'Golden',
+  'Chelsie',
+  'Elody',
+  'Corene',
+  'Katrine',
+  'Gregoria',
+  'Chelsey',
+  'Camille',
+  'Bernardo',
+  'Kristin',
+  'Ned',
+  'Oleta',
+  'Bernice',
+  'Melany',
+  'Nelle',
+  'Hardy',
+  'Myron',
+  'Jacey',
+  'Gilberto',
+  'Pattie',
+  'Lawrence',
+  'Alda',
+  'Jayme',
+  'Mable',
+  'Jerad',
+  'Kamron',
+  'Javonte',
+  'Lucie',
+  'Robin',
+  'Wilber',
+  'Dameon',
+  'Sigmund',
+  'Hayley',
+  'Ladarius',
+  'Lincoln',
+  'Wilford',
+  'Melvin',
+  'Buddy',
+  'Omari',
+  'Lafayette',
+  'Matilda',
+  'Federico',
+  'Fausto',
+  'Dexter',
+  'Boyd',
+  'Kim',
+  'Lance',
+  'Art',
+  'Kathryn',
+])

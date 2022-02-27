@@ -13,7 +13,7 @@ const Home: NextPage = () => {
   const [room, setRoom] = useState<Colyseus.Room | null>(null)
 
   if (room) {
-    return <GameRoom room={room} />
+    return <GameRoom room={room} onLeave={() => setRoom(null)} />
   }
 
   return <Lobby colyseus={colyseus} setRoom={setRoom} />
