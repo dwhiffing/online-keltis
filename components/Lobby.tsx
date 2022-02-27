@@ -88,7 +88,7 @@ const Lobby = ({
       setAvailableRooms(rooms)
     }
 
-    intervalRef.current = setInterval(getAvailableRooms, 500)
+    intervalRef.current = setInterval(getAvailableRooms, 3000)
     return () => {
       if (intervalRef.current) clearInterval(intervalRef.current)
     }
@@ -108,6 +108,8 @@ const Lobby = ({
 
   return (
     <div>
+      <h1>Game</h1>
+
       {availableRooms.map((room) => (
         <div key={room.roomId} onClick={() => onJoinRoom(room.roomId)}>
           {room.metadata?.roomName || room.roomId}

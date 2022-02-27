@@ -12,7 +12,7 @@ export const Layout = ({
   onPlay,
 }: {
   state: State | null
-  currentPlayerId: string
+  currentPlayerId?: string
   selectedCard: Card | null
   onSelect: (card: Card) => void
   onDiscard: () => void
@@ -30,7 +30,14 @@ export const Layout = ({
       <Head>
         <title>Card game</title>
         <meta name="description" content="Card game" />
-        <link rel="icon" href="/favicon.ico" />
+        <link
+          rel="icon"
+          href={
+            process.env.NODE_ENV === 'production'
+              ? '/online-keltis/favicon.ico'
+              : '/favicon.ico'
+          }
+        />
       </Head>
 
       {state.players

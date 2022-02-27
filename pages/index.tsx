@@ -6,7 +6,11 @@ import Lobby from '../components/Lobby'
 
 const colyseus =
   typeof window !== 'undefined'
-    ? new Colyseus.Client('ws://localhost:8080')
+    ? new Colyseus.Client(
+        process.env.NODE_ENV === 'production'
+          ? 'wss://online-keltis.herokuapp.com'
+          : 'ws://localhost:8080',
+      )
     : null!
 
 const Home: NextPage = () => {
