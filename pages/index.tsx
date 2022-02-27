@@ -1,51 +1,22 @@
-import type { NextPage } from 'next'
-import { useEffect, useState } from 'react'
-import * as lib from '../lib'
-import { State, Card } from '../lib'
-import { Layout } from '../components/Layout'
+import { NextPage } from 'next'
+import { useState } from 'react'
+import * as Colyseus from 'colyseus.js'
+import { GameRoom } from '../components/GameRoom'
+import Lobby from '../components/Lobby'
 
-const initialState = lib.getInitialState()
+const colyseus =
+  typeof window !== 'undefined'
+    ? new Colyseus.Client('ws://localhost:8080')
+    : null!
 
 const Home: NextPage = () => {
-  const [state, setState] = useState<State>(initialState)
-  const [selectedCard, setSelectedCard] = useState<Card | null>(null)
+  const [room, setRoom] = useState<Colyseus.Room | null>(null)
 
-  useEffect(() => {
-    setState(lib.dealCards)
-  }, [])
-
-  const onSelect = (card: Card) => {
-    if (state.phaseIndex === 1) return
-    setSelectedCard(selectedCard === card ? null : card)
+  if (room) {
+    return <GameRoom room={room} />
   }
 
-  const onPlay = () => {
-    if (state.phaseIndex === 1 || !selectedCard) return
-    setSelectedCard(null)
-    setState((state) => lib.playCard(state, selectedCard))
-  }
-
-  const onDraw = (card?: Card) => {
-    if (state.phaseIndex === 0) return
-    setState((state) => lib.drawCard(state, card))
-  }
-
-  const onDiscard = () => {
-    if (state.phaseIndex === 1 || !selectedCard) return
-    setSelectedCard(null)
-    setState((state) => lib.discardCard(state, selectedCard))
-  }
-
-  return (
-    <Layout
-      state={state}
-      onSelect={onSelect}
-      selectedCard={selectedCard}
-      onDiscard={onDiscard}
-      onDraw={onDraw}
-      onPlay={onPlay}
-    />
-  )
+  return <Lobby colyseus={colyseus} setRoom={setRoom} />
 }
 
 export default Home
