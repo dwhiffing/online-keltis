@@ -9,7 +9,7 @@ const colyseus =
     ? new Colyseus.Client(
         process.env.NODE_ENV === 'production'
           ? 'wss://online-keltis.herokuapp.com'
-          : 'ws://localhost:8080',
+          : 'ws://localhost:3553',
       )
     : null!
 

@@ -82,13 +82,13 @@ const Lobby = ({
       const rooms = await colyseus.getAvailableRooms()
       if (rooms.length === 0) return
 
-      if (!localStorage.getItem(rooms[0].roomId)) {
-        onJoinRoom(rooms[0].roomId)
-      }
       setAvailableRooms(rooms)
     }
 
-    intervalRef.current = setInterval(getAvailableRooms, 3000)
+    intervalRef.current = setInterval(
+      getAvailableRooms,
+      process.env.NODE_ENV === 'production' ? 3000 : 500,
+    )
     return () => {
       if (intervalRef.current) clearInterval(intervalRef.current)
     }
@@ -107,17 +107,25 @@ const Lobby = ({
   }, [availableRooms, onJoinRoom])
 
   return (
-    <div>
-      <h1>Game</h1>
+    <main>
+      <h1>Keltis</h1>
 
-      {availableRooms.map((room) => (
-        <div key={room.roomId} onClick={() => onJoinRoom(room.roomId)}>
-          {room.metadata?.roomName || room.roomId}
+      <div className="space-y-6">
+        <div className="space-2">
+          {availableRooms.map((room) => (
+            <div
+              className="border rounded-lg p-2"
+              key={room.roomId}
+              onClick={() => onJoinRoom(room.roomId)}
+            >
+              {room.metadata?.roomName || room.roomId}
+            </div>
+          ))}
         </div>
-      ))}
 
-      <button onClick={() => onCreateRoom()}>Create Room</button>
-    </div>
+        <button onClick={() => onCreateRoom()}>Create Game</button>
+      </div>
+    </main>
   )
 }
 

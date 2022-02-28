@@ -49,16 +49,25 @@ export const GameRoom = ({
     room.send('Play', { card: selectedCard })
   }
 
-  // console.log(state)
-
   if (state?.playerIndex === -1) {
     return (
-      <div>
-        {state.players.map((player) => (
-          <p key={player.name}>{player.name}</p>
-        ))}
-        <button onClick={() => room.send('Start')}>start</button>
-      </div>
+      <main>
+        <div className="space-y-6">
+          <div className="space-y-2">
+            {state.players.map((player) => (
+              <div key={player.name} className="border rounded-md p-3">
+                <p>{player.name}</p>
+              </div>
+            ))}
+          </div>
+          <button
+            disabled={state.players.length < 2}
+            onClick={() => room.send('Start')}
+          >
+            Start Game
+          </button>
+        </div>
+      </main>
     )
   }
 

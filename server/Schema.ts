@@ -1,4 +1,5 @@
-import { type, MapSchema, ArraySchema, Schema } from '@colyseus/schema'
+import { type, ArraySchema, Schema } from '@colyseus/schema'
+import { Delayed } from 'colyseus'
 import * as lib from '../lib'
 
 export class Card extends Schema {
@@ -29,6 +30,7 @@ export class Pile extends Schema {
 
 export class Player extends Schema {
   reconnection: any
+  leaveInterval: Delayed | null
 
   @type('string')
   id = ''
@@ -54,6 +56,7 @@ export class Player extends Schema {
   constructor(id: string) {
     super()
     this.id = id
+    this.leaveInterval = null
   }
 
   addCard = (card: Card) => {

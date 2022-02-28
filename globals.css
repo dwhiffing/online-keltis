@@ -19,17 +19,26 @@ a {
   box-sizing: border-box;
 }
 
+h1 {
+  @apply text-2xl font-semibold;
+}
+
 main {
+  @apply p-4 flex flex-col flex-1 justify-between;
+}
+
+.game-wrapper {
   @apply absolute inset-0;
-  @apply m-2 flex flex-col flex-1 justify-end;
+  @apply p-4 flex flex-col flex-1 justify-end;
 }
 
 .cards-wrapper {
-  @apply flex flex-wrap gap-2;
+  @apply flex flex-wrap gap-1;
 }
 
 .card {
-  @apply flex justify-center rounded-md items-center w-[42px] h-[52px] text-lg;
+  @apply flex flex-col justify-center rounded-md items-center w-[32px] h-[42px] text-base space-y-1;
+  line-height: 1rem;
 }
 
 .card {
@@ -41,11 +50,11 @@ main {
 }
 
 .card > div {
-  @apply rounded-full w-3 h-3 ml-2;
+  @apply rounded-full w-3 h-3;
 }
 
 button {
-  @apply bg-gray-300 px-3 py-1 mb-4 rounded-md;
+  @apply bg-gray-300 min-w-[6rem] px-2 py-2 rounded-md;
 }
 
 button:disabled {

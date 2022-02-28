@@ -129,7 +129,6 @@ export const getName = () => {
 const names = shuffle([
   'Dayne',
   'Golden',
-  'Chelsie',
   'Elody',
   'Corene',
   'Katrine',
