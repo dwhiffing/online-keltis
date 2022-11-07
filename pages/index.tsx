@@ -8,7 +8,7 @@ const colyseus =
   typeof window !== 'undefined'
     ? new Colyseus.Client(
         process.env.NODE_ENV === 'production'
-          ? 'wss://online-keltis.herokuapp.com'
+          ? 'wss://web-production-b05a.up.railway.app'
           : 'ws://localhost:8080',
       )
     : null!
