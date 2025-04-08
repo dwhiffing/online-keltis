@@ -1,0 +1,30 @@
+don't allow a card to be played if a stack already exists and it doesn't fit
+
+allow point card to be played on matching value exposed on color row
+
+if only 2 players randomly remove 30 cards
+
+implement wishing stones
+  allow a player to play 2 cards if they have 2 matching a free stone
+  allow player to draw 2 cards in this case
+
+implement end game conditions
+  when end cards have been played in any 5 rows
+  or when the last card is drawn from the draw pile
+
+allow players to play 2 cards at end of game
+
+implement scoring
+  amount:       0, 1, 2, 3, 4, 5, 6, 7, 8, 9
+  color rows:   0,-4,-3,-2, 1, 2, 3, 6, 7,10
+  point row:   1
+  stones:      -4,-1, 0, 4, 6,10
+
+better styles
+
+desktop design
+
+gestures
+
+animations
+
